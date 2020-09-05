@@ -1,6 +1,6 @@
 # Shinny Dashboard "Plan de Salud"
 
-```bash
+```text
 ~/PS_Dashboard
 |-- ui.R
 |-- server.R
