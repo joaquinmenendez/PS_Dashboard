@@ -1,5 +1,13 @@
 # Shinny Dashboard "Plan de Salud"
 
+## Levantar el Dashboard
+- Clonar el repositorio en tu carpeta local
+- Dentro del repositorio correr R
+```R
+library(shiny)
+shiny::runApp('./')
+```
+
 ## Estructura 
 ```text
 ~/PS_Dashboard
