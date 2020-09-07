@@ -1,3 +1,12 @@
+# Importamos librerias
+library(shiny)
+library(lubridate)
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(shinydashboard)
+library(sys)
+
 # Importamos los DF
 # Asumimos que historico es el dataset  completo con todos los datos.
 historico <-  read.csv(file = "D:/Hospital Italiano/Plan de Salud (PS)/datos_calculados_MODIF.csv") # uso mismo archivo por ahora PERO CON NUEVAS COLUMNAS
@@ -125,3 +134,4 @@ ui <- dashboardPage(
     ) # Fin Tabs
   ) # Fin Dashboard Body
 ) # Fin Dashboard
+
