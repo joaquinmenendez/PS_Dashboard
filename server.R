@@ -100,8 +100,8 @@ server <- function(input, output) {
             '\nNum total de periodos : ', dim(historico %>%
                                                 filter(AFILIADO == input$id_afiliado) %>%
                                                 select(PERIODO))[1],
-            '\nPeriodos arriba : ', sum(bajas_mes_filter()$mayor_uno),
-            '\nRazon media : ',round(mean(bajas_mes_filter()$RAZON_GASTO),3),
+            '\nPeriodos arriba (periodo): ', sum(bajas_mes_filter()$mayor_uno),
+            '\nRazon media (periodo) : ',round(mean(bajas_mes_filter()$RAZON_GASTO),3),
             '\nRazon historica: ', round(historico %>% 
                                            filter(AFILIADO == input$id_afiliado) %>%
                                            select(RAZON_GASTO) %>%
@@ -120,12 +120,13 @@ server <- function(input, output) {
       )
   }) 
   # Tabla (pestaña datos historicos)
-  output$tabla_historico <- renderDataTable(historico %>% 
+  output$tabla_historico <- renderDataTable(expr = historico %>% 
                                                filter(
                                                  between(PERIODO_date,
                                                          input$fechas_historicas[1],
                                                          input$fechas_historicas[2])
-                                                 ),
+                                                 ) %>%
+                                                  select(PERIODO:MOTIVO),
                                             options = list(pageLength = 10)
                                                )
   # Descargar tabla
@@ -185,9 +186,9 @@ server <- function(input, output) {
             '\nNum total de periodos : ', dim(historico %>%
                                                 filter(AFILIADO == input$id_afiliado_historico) %>%
                                                 select(PERIODO))[1],
-            '\nPeriodos arriba : ', sum(historico_filter()$mayor_uno),
-            '\nRazon media : ',round(mean(historico_filter()$RAZON_GASTO),3),
-            '\nRazon historica: ', round(historico %>% 
+            '\nPeriodos arriba (periodo) : ', sum(historico_filter()$mayor_uno),
+            '\nRazon media (periodo) : ',round(mean(historico_filter()$RAZON_GASTO),3),
+            '\nRazon media historica: ', round(historico %>% 
                                            filter(AFILIADO == input$id_afiliado_historico) %>%
                                            select(RAZON_GASTO) %>%
                                            summarise(mean(RAZON_GASTO)),3)

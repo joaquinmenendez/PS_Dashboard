@@ -75,49 +75,51 @@ ui <- dashboardPage(
       # Empieza segunda Tab ############
       tabItem(
         tabName='historico',
-        titlePanel("Datos históricos"),
-        fluidRow(column(width=5,
-                        h3('Datos de los afiliados dados de baja')
-                        ),
-                 column(width = 5,
-                        dateRangeInput(inputId = 'fechas_historicas',
-                                      label= "Fecha: Desde - Hasta",
-                                      min = min(historico$PERIODO_date),
-                                      max = max(historico$PERIODO_date),
-                                      start = min(historico$PERIODO_date),
-                                      end = max(historico$PERIODO_date)
-                                      )
-                        ),
-                 column(width = 2,
-                        downloadButton(outputId = 'bajas_historico.csv',
-                                       label = "Descargar .csv")
-                        )
-                 ),
-        fluidRow(column(width = 12,
-                        dataTableOutput("tabla_historico"))
-        ),
-        fluidRow(h3("Analisis de afiliado individual")),
-        fluidRow(column(3,
-                        fluidRow(selectInput(selectize = T,
-                                             multiple = F,
-                                             selected = '',
-                                             inputId = "id_afiliado_historico",
-                                             label = "Numero Afiliado",
-                                             choices = c('Seleccione uno'='',unique(historico$AFILIADO)))
-                        ),
-                        fluidRow(dateRangeInput(inputId = 'filtrar_periodo_afiliado_historico',
-                                                label= "Desde - Hasta",
-                                                start = min(historico$PERIODO_date),
-                                                end = Sys.Date(),
-                                                min = min(historico$PERIODO_date),
-                                                max = Sys.Date())
-                        ),
-                        fluidRow(verbatimTextOutput(outputId = 'datos_afiliado_historico',
-                                                    placeholder = T))
-        ),
-        column(9,
-               plotOutput(outputId = "gastos_plot_historico")
-        )
+        fluidPage(
+          titlePanel("Datos históricos"),
+          fluidRow(column(width=5,
+                          h3('Datos de los afiliados dados de baja')
+                          ),
+                   column(width = 5,
+                          dateRangeInput(inputId = 'fechas_historicas',
+                                        label= "Fecha: Desde - Hasta",
+                                        min = min(historico$PERIODO_date),
+                                        max = max(historico$PERIODO_date),
+                                        start = min(historico$PERIODO_date),
+                                        end = max(historico$PERIODO_date)
+                                        )
+                          ),
+                   column(width = 2,
+                          downloadButton(outputId = 'bajas_historico.csv',
+                                         label = "Descargar .csv")
+                          )
+                   ),
+          fluidRow(column(width = 12,
+                          dataTableOutput("tabla_historico"))
+          ),
+          fluidRow(h3("Analisis de afiliado individual")),
+          fluidRow(column(3,
+                          fluidRow(selectInput(selectize = T,
+                                               multiple = F,
+                                               selected = '',
+                                               inputId = "id_afiliado_historico",
+                                               label = "Numero Afiliado",
+                                               choices = c('Seleccione uno'='',unique(historico$AFILIADO)))
+                          ),
+                          fluidRow(dateRangeInput(inputId = 'filtrar_periodo_afiliado_historico',
+                                                  label= "Desde - Hasta",
+                                                  start = min(historico$PERIODO_date),
+                                                  end = Sys.Date(),
+                                                  min = min(historico$PERIODO_date),
+                                                  max = Sys.Date())
+                          ),
+                          fluidRow(verbatimTextOutput(outputId = 'datos_afiliado_historico',
+                                                      placeholder = T))
+          ),
+          column(9,
+                 plotOutput(outputId = "gastos_plot_historico")
+          )
+          )
         )
       ) # Fin segunda Tab
     ) # Fin Tabs
