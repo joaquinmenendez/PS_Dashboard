@@ -1,3 +1,20 @@
+# Importamos los DF
+# Asumimos que historico es el dataset  completo con todos los datos.
+historico <-  read.csv(file = "D:/Hospital Italiano/Plan de Salud (PS)/datos_calculados_MODIF.csv") # uso mismo archivo por ahora PERO CON NUEVAS COLUMNAS
+historico <- as_tibble(historico) # me intersa que sea una tibble?
+historico$PERIODO_date <- lubridate::dmy(historico$PERIODO) # convierto las categories a fechas
+historico <- historico %>%
+  arrange(desc(historico$IMPORTE_EGRESO))# Uso $ por que arrange no me reconoce el string solo.
+
+# Filtramos del historico las bajas de este mes.
+# Queremos filtrar por algnún motivo de baja?
+bajas_mes <- historico %>% filter(
+  between(PERIODO_date,
+          lubridate::floor_date(max(historico$PERIODO_date) - month(1),unit = 'month'),
+          max(historico$PERIODO_date)
+  )
+)
+
 # Define UI for application that draws a histogram
 ui <- dashboardPage(
   # Titulo Dashboard
@@ -31,15 +48,15 @@ ui <- dashboardPage(
                          column(2, checkboxGroupInput(inline = TRUE, 
                                                       inputId = 'motivos_mes',
                                                       label = 'Motivos de baja',
-                                                      choices = unique(historico$MOTIVO),
-                                                      selected = unique(historico$MOTIVO)
+                                                      choices = unique(bajas_mes$MOTIVO),
+                                                      selected = unique(bajas_mes$MOTIVO)
                                                       )
                                 ),
                          column(2, checkboxGroupInput(inline = TRUE, 
                                                       inputId = 'plan_mes',
                                                       label = 'Plan de Salud',
-                                                      choices = unique(historico$PLAN),
-                                                      selected = unique(historico$PLAN)
+                                                      choices = unique(bajas_mes$PLAN),
+                                                      selected = unique(bajas_mes$PLAN)
                                                       )
                                 ),
                          column(width = 2,
@@ -48,7 +65,7 @@ ui <- dashboardPage(
                                 )
                          ),
                 fluidRow(column(width = 12,
-                                tableOutput("tabla_resumen")
+                                dataTableOutput("tabla_resumen")
                 )
                 ),
                 

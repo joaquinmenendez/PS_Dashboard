@@ -29,9 +29,10 @@ bajas_mes <- historico %>% filter(
 # Define server logic 
 server <- function(input, output) {
   require(dplyr)
-  
+
+
   #Tabla
-  output$tabla_resumen <- renderTable(head(bajas_mes %>% 
+  output$tabla_resumen <- renderDataTable(head(bajas_mes %>% 
                                              select(PERIODO:MOTIVO) %>% #excluyo PERIODO_date
                                              filter(MOTIVO == input$motivos_mes) %>% #excluyo motivos no seleccionados
                                              filter(PLAN == input$plan_mes), #excluyo planes no seleccionados
@@ -47,17 +48,20 @@ server <- function(input, output) {
                                                             filter(between(PERIODO_date,
                                                                            input$filtrar_fecha[1],
                                                                            input$filtrar_fecha[2])) %>% 
-                                                            select(PERIODO:sum_mayor_uno), file, row.names = FALSE)
+                                                            select(PERIODO:MOTIVO), file, row.names = FALSE)
                                               }
   )
   
-  # Reactive bajas_mes filtrado usado para plotear los datos y las tablas. Por eso es reactivos
-  bajas_mes_filter <- reactive({x <- bajas_mes %>% 
-    filter(AFILIADO == input$id_afiliado) %>%
-    filter(between(PERIODO_date,
-                   input$filtrar_periodo_afiliado[1],
-                   input$filtrar_periodo_afiliado[2]))
-  }) 
+  # Reactive bajas_mes filtrado usado para plotear los datos y las tablas. Por eso es reactivo
+  bajas_mes_filter <- reactive({
+    x <- historico %>% 
+      filter(AFILIADO == input$id_afiliado) %>%
+        filter(between(PERIODO_date,
+                       input$filtrar_periodo_afiliado[1],
+                       input$filtrar_periodo_afiliado[2])
+               )
+    }) 
+  
   
   output$gastos_plot <- renderPlot({
     x <- as_tibble(bajas_mes_filter())
@@ -65,14 +69,16 @@ server <- function(input, output) {
     x <- x %>%
       mutate(COLOR= ifelse(RAZON_GASTO > .9, 'red',
                            ifelse(RAZON_GASTO > .5, 'yellow','green')
-      )
-      )
-    x$COLOR <- factor(x$COLOR,
-                      levels = c("red", "yellow", "green"))  
+                           )
+             )
     
-    # Plot
+    x$COLOR <- factor(x$COLOR,
+                      levels = c("red", "yellow", "green")
+                      )  
+    
+    # Plot #########
     ggplot(data= x) +
-      geom_bar(aes(as_factor(PERIODO),RAZON_GASTO, fill=COLOR),
+      geom_bar(aes(PERIODO_date,RAZON_GASTO, fill=COLOR),
                stat = 'identity') +
       labs(title= 'Razon de gasto por mes') +
       coord_cartesian(ylim = c(0,2)) + 
@@ -101,17 +107,18 @@ server <- function(input, output) {
             '\nPlan : ', as.character(bajas_mes_filter()$PLAN[1]),
             '\nMotivo de baja : ', as.character(bajas_mes_filter()$MOTIVO[1]),
             '\nNum. periodos (seleccionados): ', length(bajas_mes_filter()$PERIODO),
-            '\nNum total de periodos : ', dim(bajas_mes %>%
+            '\nNum total de periodos : ', dim(historico %>%
                                                 filter(AFILIADO == input$id_afiliado) %>%
                                                 select(PERIODO))[1],
             '\nPeriodos arriba : ', sum(bajas_mes_filter()$mayor_uno),
             '\nRazon media : ',round(mean(bajas_mes_filter()$RAZON_GASTO),3),
-            '\nRazon historica: ', round(bajas_mes %>% 
+            '\nRazon historica: ', round(historico %>% 
                                            filter(AFILIADO == input$id_afiliado) %>%
                                            select(RAZON_GASTO) %>%
                                            summarise(mean(RAZON_GASTO)),3)
     ))
   })
+  # Tabla (pestaña datos historicos)
   output$tabla_historico <- renderTable(head(historico %>% 
                                                filter(
                                                  between(PERIODO_date,
@@ -122,7 +129,7 @@ server <- function(input, output) {
                                                filter(MOTIVO == input$motivos) %>% #excluyo motivos no seleccionados
                                                filter(PLAN == input$plan), #excluyo planes no seleccionados
                                              input$num_filas)) # Uso head para plotear N casos
-  
+  # Descargar tabla
   output$bajas_historico.csv <- downloadHandler(contentType = 'text/csv',
                                                 filename = 'Bajas_historico.csv',
                                                 content = function(file) {
