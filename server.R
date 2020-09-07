@@ -14,7 +14,7 @@ historico <-  read.csv(file = "D:/Hospital Italiano/Plan de Salud (PS)/datos_cal
 historico <- as_tibble(historico) # me intersa que sea una tibble?
 historico$PERIODO_date <- lubridate::dmy(historico$PERIODO) # convierto las categories a fechas
 historico <- historico %>%
-              arrange(desc(historico$IMPORTE_EGRESO))# Uso $ por que arrange no me reconoce el string solo.
+              arrange(desc(IMPORTE_EGRESO))# Uso $ por que arrange no me reconoce el string solo.
 
 # Filtramos del historico las bajas de este mes.
 # Queremos filtrar por algnún motivo de baja?
@@ -22,32 +22,27 @@ bajas_mes <- historico %>% filter(
                             between(PERIODO_date,
                                     lubridate::floor_date(max(historico$PERIODO_date) - month(1),unit = 'month'),
                                     max(historico$PERIODO_date)
-                                    )
-                            )
+                                    )) %>%
+                            arrange(desc(IMPORTE_EGRESO))
 
 #SERVER############################################################################################################################
 # Define server logic 
 server <- function(input, output) {
   require(dplyr)
 
-
+# Primer tab #####
   #Tabla
-  output$tabla_resumen <- renderDataTable(head(bajas_mes %>% 
-                                             select(PERIODO:MOTIVO) %>% #excluyo PERIODO_date
-                                             filter(MOTIVO == input$motivos_mes) %>% #excluyo motivos no seleccionados
-                                             filter(PLAN == input$plan_mes), #excluyo planes no seleccionados
-                                           input$top_n
-                                           )
-                                      ) # Uso head para plotear N casos
+output$tabla_resumen <- renderDataTable(expr = bajas_mes %>% 
+                                             select(PERIODO:MOTIVO),
+                                        options = list(pageLength = 10)
+                                         )
+                                      
   
   #Boton Descargar # Discutir si seria necesario que filtre el bajas_mes antes de descargar
   output$bajas_del_mes.csv <- downloadHandler(contentType = 'text/csv',
                                               filename = 'Bajas_del_mes.csv',
                                               content = function(file) {
                                                 write.csv(bajas_mes %>% 
-                                                            filter(between(PERIODO_date,
-                                                                           input$filtrar_fecha[1],
-                                                                           input$filtrar_fecha[2])) %>% 
                                                             select(PERIODO:MOTIVO), file, row.names = FALSE)
                                               }
   )
@@ -118,17 +113,16 @@ server <- function(input, output) {
                                            summarise(mean(RAZON_GASTO)),3)
     ))
   })
+# Segunda tab ###############
   # Tabla (pestaña datos historicos)
-  output$tabla_historico <- renderTable(head(historico %>% 
+  output$tabla_historico <- renderDataTable(historico %>% 
                                                filter(
                                                  between(PERIODO_date,
                                                          input$fechas_historicas[1],
                                                          input$fechas_historicas[2])
-                                               ) %>% 
-                                               select(PERIODO:MOTIVO) %>%
-                                               filter(MOTIVO == input$motivos) %>% #excluyo motivos no seleccionados
-                                               filter(PLAN == input$plan), #excluyo planes no seleccionados
-                                             input$num_filas)) # Uso head para plotear N casos
+                                                 ),
+                                            options = list(pageLength = 10)
+                                               )
   # Descargar tabla
   output$bajas_historico.csv <- downloadHandler(contentType = 'text/csv',
                                                 filename = 'Bajas_historico.csv',
@@ -136,9 +130,8 @@ server <- function(input, output) {
                                                   write.csv(historico %>% 
                                                               filter(between(PERIODO_date,
                                                                              input$fechas_historicas[1],
-                                                                             input$fechas_historicas[2])) %>% 
-                                                              select(PERIODO:MOTIVO) %>%
-                                                              filter(MOTIVO == input$motivos), file, row.names = FALSE)
+                                                                             input$fechas_historicas[2]))
+                                                            , file, row.names = FALSE)
                                                 }
   )
 }
