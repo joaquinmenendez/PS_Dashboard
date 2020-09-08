@@ -26,8 +26,8 @@ shiny::runApp('./')
 
 Tareas:
 
-- []  Crear la ETL de las distintas tablas de gasto (Este proceso viviria en Pentaho) .
-- []  Crear el script que tome estas tablas y aplique los calculos agregados (definir si queremos mas) y devuelva un `.csv` que se almacene localmente en el servidor.
+- Crear la ETL de las distintas tablas de gasto (Este proceso viviria en Pentaho) .
+-   Crear el script que tome estas tablas y aplique los calculos agregados (definir si queremos mas) y devuelva un `.csv` que se almacene localmente en el servidor.
 - [x]  Modificar el Dashboard con cambios menores
-- []  Crear documentación compartida en Draw.io
+-   Crear documentación compartida en Draw.io
 
