@@ -31,3 +31,6 @@ Tareas:
 - [x]  Modificar el Dashboard con cambios menores
 - [x] Crear documentación compartida en Draw.io
 
+´´´
+codigo
+´´´
