@@ -68,6 +68,7 @@ server <- function(input, output) {
                       levels = c("red", "yellow", "green")
                       )  
     ggplot(data= x) +
+    #annotate(geom='rect', xmin = as_date(0), xmax = as_date('2022-01-01'), ymin = 0, ymax = 1, fill = 'gray80')+
       geom_bar(aes(PERIODO_date,RAZON_GASTO, fill=COLOR),
                stat = 'identity') +
       labs(title= 'Razon de gasto por mes') +
@@ -83,6 +84,7 @@ server <- function(input, output) {
       geom_hline(yintercept = mean(x$RAZON_GASTO),
                  linetype= 'dashed',
                  size = 1) +
+      annotate(geom = 'text', label = 'Razon media', x = as_date(max(x$PERIODO_date)), y = mean(x$RAZON_GASTO), hjust = .5, vjust = -0.5) +
       theme_light() + 
       theme(axis.text.x=element_text(angle =65, vjust = 0.5))+
       xlab('Periodo') + 
@@ -92,17 +94,17 @@ server <- function(input, output) {
   # Texto resumen
   output$datos_afiliado <- renderText({
     
-    paste(c('Afiliado : ',input$id_afiliado,
-            '\nEdad : ', bajas_mes_filter()$EDAD[1],
-            '\nPlan : ', as.character(bajas_mes_filter()$PLAN[1]),
-            '\nMotivo de baja : ', as.character(bajas_mes_filter()$MOTIVO[1]),
-            '\nNum. periodos (seleccionados): ', length(bajas_mes_filter()$PERIODO),
-            '\nNum total de periodos : ', dim(historico %>%
+    paste(c('Afiliado :',input$id_afiliado,
+            '\nEdad :', bajas_mes_filter()$EDAD[1],
+            '\nPlan :', as.character(bajas_mes_filter()$PLAN[1]),
+            '\nMotivo de baja :', as.character(bajas_mes_filter()$MOTIVO[1]),
+            '\nNum. periodos (seleccionados):', length(bajas_mes_filter()$PERIODO),
+            '\nNum total de periodos :', dim(historico %>%
                                                 filter(AFILIADO == input$id_afiliado) %>%
                                                 select(PERIODO))[1],
-            '\nPeriodos arriba (periodo): ', sum(bajas_mes_filter()$mayor_uno),
-            '\nRazon media (periodo) : ',round(mean(bajas_mes_filter()$RAZON_GASTO),3),
-            '\nRazon historica: ', round(historico %>% 
+            '\nPeriodos arriba (periodo):', sum(bajas_mes_filter()$mayor_uno),
+            '\nRazon media (periodo) :',round(mean(bajas_mes_filter()$RAZON_GASTO),3),
+            '\nRazon historica :', round(historico %>% 
                                            filter(AFILIADO == input$id_afiliado) %>%
                                            select(RAZON_GASTO) %>%
                                            summarise(mean(RAZON_GASTO)),3)
