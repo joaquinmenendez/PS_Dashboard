@@ -30,3 +30,6 @@ Tareas:
 - [ ]  Crear el script que tome estas tablas y aplique los calculos agregados (definir si queremos mas) y devuelva un `.csv` que se almacene localmente en el servidor.
 - [x]  Modificar el Dashboard con cambios menores
 - [x] Crear documentación compartida en Draw.io
+
+Screenshot del Dashboard
+![Dashboard](https://user-images.githubusercontent.com/43391630/94960610-30de3400-04c1-11eb-9a33-b66124948f18.png)
