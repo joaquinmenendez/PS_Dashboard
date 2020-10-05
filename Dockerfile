@@ -1,6 +1,19 @@
-FROM r-base
+FROM rocker/tidyverse:latest
+
 COPY . /home/joaquin/Desktop/Projects/PS_Dashboard
 WORKDIR /home/joaquin/Desktop/Projects/PS_Dashboard
 EXPOSE 8080
 USER root
-CMD ["Rscript", "starter.r"]
+RUN install2.r --error \
+    shiny \
+    shinydashboard  \
+    forcats \
+    stringr \
+    dplyr \
+    purrr \
+    readr \
+    tidyr \
+    tibble \
+    ggplot2 \
+    lubridate
+CMD ["Rscript", "starter.R"]
