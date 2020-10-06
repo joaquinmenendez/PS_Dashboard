@@ -7,17 +7,20 @@
 ```bash
 docker build -t dashboard_ps .
 ```
-Una vez que se construya la imagen ingresar
+- Una vez que la imagen se terminó de construir ingresar
 ```bash
 docker run -p 5024:5024 dashboard_ps
 ```
+- En caso de que el usuario decida correre el dashboard localmente y no quiera usar Docker puede hacerlo corriendo `starter.R`. 
 
 ## Estructura 
 ```text
 ~/PS_Dashboard
-|-- ui.R
-|-- server.R
-|-- README.md
+├── Dockerfile
+├── README.md
+├── server.R
+├── starter.R
+└── ui.R
 ```
 
 ## Documentacion 
@@ -30,9 +33,9 @@ docker run -p 5024:5024 dashboard_ps
 
 Tareas:
 
-- [ ] Crear la ETL de las distintas tablas de gasto (Este proceso viviria en Pentaho) .
-- [ ]  Crear el script que tome estas tablas y aplique los calculos agregados (definir si queremos mas) y devuelva un `.csv` que se almacene localmente en el servidor.
-- [x]  Modificar el Dashboard con cambios menores
+- [ ] Crear la ETL de las restantes tablas de gasto (Este proceso viviria en Pentaho como una actividad mensual).
+- [ ] Crear el script que tome estas tablas y aplique los calculos agregados (definir si queremos más) y actualice una tabla en el Datalake .
+- [x] Crear el Dockerfile para montar el dashboard
 - [x] Crear documentación compartida en Draw.io
 
 Screenshot del Dashboard
