@@ -9,7 +9,7 @@ docker build -t dashboard_ps .
 ```
 Una vez que se construya la imagen ingresar
 ```bash
-docker run -p 5024:5024 -v ${PWD}:/home dashboard_ps
+docker run -p 5024:5024 dashboard_ps
 ```
 
 ## Estructura 
