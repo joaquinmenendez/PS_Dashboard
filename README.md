@@ -35,8 +35,10 @@ Tareas:
 
 - [ ] Crear la ETL de las restantes tablas de gasto (Este proceso viviria en Pentaho como una actividad mensual).
 - [ ] Crear el script que tome estas tablas y aplique los calculos agregados (definir si queremos más) y actualice una tabla en el Datalake .
+- [ ] Modificar los scripts `server.R` y `ui.R` para que lean los datos de la tabla en el Datalake en vez del .csv local
 - [x] Crear el Dockerfile para montar el dashboard
 - [x] Crear documentación compartida en Draw.io
+
 
 Screenshot del Dashboard
 ![Dashboard](https://user-images.githubusercontent.com/43391630/94960610-30de3400-04c1-11eb-9a33-b66124948f18.png)
