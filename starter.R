@@ -5,4 +5,5 @@
 #                 repos='http://cran.rstudio.com/')
 
 library(shiny)
-shiny::runApp('./')
+shiny::runApp('./', port = 5024)
+ 
