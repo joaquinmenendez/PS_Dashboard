@@ -1,3 +1,5 @@
+# Si deseas instalar los paquetes necesarios descomenta las lineas del 3-7
+
 # install.packages(c("sys","shinydashboard" ,"forcats","stringr","dplyr",
 #                   "purrr","readr","tidyr","tibble","ggplot2","tidyverse",
 #                   "lubridate","shiny"),

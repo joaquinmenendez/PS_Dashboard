@@ -16,4 +16,4 @@ RUN install2.r --error \
     tibble \
     ggplot2 \
     lubridate
-RUN R -e "shiny::runApp('./', port=5024, host='0.0.0.0')"
+CMD ["Rscript", "starter.R"]
