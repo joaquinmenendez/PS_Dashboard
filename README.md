@@ -2,10 +2,14 @@
 
 ## Levantar el Dashboard
 - Clonar el repositorio en tu carpeta local
-- Dentro del repositorio correr R
-```R
-library(shiny)
-shiny::runApp('./')
+
+- Dentro del repositorio correr Docker:
+```bash
+docker build -r dashboard_ps .
+```
+Una vez que se construya la imagen ingresar
+```bash
+docker run -p 5024:5024 dashboard_ps
 ```
 
 ## Estructura 
