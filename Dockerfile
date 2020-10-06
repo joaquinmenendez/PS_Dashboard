@@ -2,7 +2,7 @@ FROM rocker/tidyverse:latest
 
 COPY . /home/joaquin/Desktop/Projects/PS_Dashboard
 WORKDIR /home/joaquin/Desktop/Projects/PS_Dashboard
-EXPOSE 8080
+EXPOSE 5024
 USER root
 RUN install2.r --error \
     shiny \
