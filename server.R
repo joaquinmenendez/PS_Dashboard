@@ -10,7 +10,7 @@ library(sys)
 
 # PRIMERO CALCULOS
 # Asumimos que historico es el dataset  completo con todos los datos.
-historico <-  read.csv(file = "D:/Hospital Italiano/Plan de Salud (PS)/datos_calculados_MODIF.csv") # uso mismo archivo por ahora PERO CON NUEVAS COLUMNAS
+historico <-  read.csv(file = "./datos_calculados_MODIF.csv") # uso mismo archivo por ahora PERO CON NUEVAS COLUMNAS
 historico <- as_tibble(historico) # me intersa que sea una tibble?
 historico$PERIODO_date <- lubridate::dmy(historico$PERIODO) # convierto las categories a fechas
 historico <- historico %>%
