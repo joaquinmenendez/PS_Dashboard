@@ -1,7 +1,7 @@
 # Shinny Dashboard "Plan de Salud"
 El presente repositorio contiene los archivos necesarios para correr un Dashboard en Shiny (R), asi como para construir
-un container en Docker para poder ponerlo en producción.
-El Dashboard tiene como proposito ayudar a explorar los perfiles de gastos de los miembros del plan de salud del HI.
+un container en Docker para poder ponerlo en producción.<br>
+El Dashboard tiene como proposito ayudar a explorar los perfiles de gastos de los miembros del plan de salud del HI.<br>
 Puedes acceder a una demo mostrando el estado actual del dashboard en [YouTube](https://youtu.be/S8vAC3X-6wM)
 
 ## Levantar el Dashboard
